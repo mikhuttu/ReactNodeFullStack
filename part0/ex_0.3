@@ -1,0 +1,39 @@
+kayttaja->selain:
+note left of selain
+kayttaja kirjottaa osoiteriville
+fullstack-exampleapp.herokuapp.com/notes
+end note
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/notes
+note left of palvelin
+  muodostetaan HTML, jossa on
+  - Otsikko "Muistiinpanot",
+  - formi uuden muistiinpanon talletukseen, ja
+  - headereissä linkit "main.css":ään ja "main.js":ään
+end note
+palvelin->selain: status 200, yo. HTML
+
+note left of selain
+ Sivun sisältö tulee näkyville käyttäjän selaimessa
+end note
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/main.css
+palvelin->selain: status 200, yo. main.css
+
+note left of selain
+ Ladattu CSS muodostaa elementteihin tyylittelyn
+end note
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/main.js
+palvelin->selain: status 200, main.js
+
+note left of selain
+ Ladatun JavaScriptin "juuressa" määritelty koodi suoritetaan.
+end note
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/data.json
+palvelin->selain: status 200, muistiinpanot JSON-formaatissa
+
+note left of selain
+ JavaScript koodi "appendaa" ladattujen muistiinpanojen sisällön
+ HTML:n sekaan generoimansa <ul> elementin lapsiksi.
+end note

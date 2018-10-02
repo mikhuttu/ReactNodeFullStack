@@ -1,0 +1,17 @@
+kayttaja->selain:
+note left of selain
+  Käyttäjä täyttää muistiinpanon sisällön ja
+  painaa "Talleta" painiketta.
+end note
+
+selain->palvelin: POST fullstack-exampleapp.herokuapp.com/new_note
+
+palvelin->selain: Status 302, Location: "/notes"
+
+note right of selain
+  Sivu ladataan uudelleen samalla tavoin kuin tehtävässä 0.3.
+end note
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/notes
+
+palvelin->selain: HTML

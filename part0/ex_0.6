@@ -1,0 +1,16 @@
+kayttaja->selain:
+note left of selain
+  Käyttäjä täyttää muistiinpanon sisällön ja
+  painaa "Talleta" painiketta.
+end note
+
+note left of selain
+  form fieldille määritelty "onsubmit"-koodi suoritetaan
+  - selain piirtää muistiinpanojen listan uudelleen lisäten listaan käyttäjän luoman muistiinpanon
+  - tieto uuden muistiinpanon luonnista lähetetään serverille
+end note
+
+selain->palvelin: POST fullstack-exampleapp.herokuapp.com/new_note_spa, data: "stringified note"
+
+palvelin->selain: Status 201, data: {"message": 'note created'}
+
