@@ -8,7 +8,10 @@ const Button = ({handle, text}) => (
 )
 
 const Statistic = ({description, value}) => (
-  <div>{description} {value}</div>
+  <tr>
+    <td>{description}</td>
+    <td>{value}</td>
+  </tr>
 )
 
 const Statistics = ({good, neutral, bad}) => {
@@ -28,13 +31,15 @@ const Statistics = ({good, neutral, bad}) => {
   const statistics = (good, neutral, bad) => {
     if (sum(good, neutral, bad) > 0) {
       return (
-        <div>
-          <Statistic description = "hyvä" value = {good} />
-          <Statistic description = "neutraali" value = {neutral} />
-          <Statistic description = "huono" value = {bad} />
-          <Statistic description = "keskiarvo" value = {average(good, neutral, bad)} />
-          <Statistic description = "positiivisia" value = {positive(good, neutral, bad)} />
-        </div>
+        <table>
+          <tbody>
+            <Statistic description = "hyvä" value = {good} />
+            <Statistic description = "neutraali" value = {neutral} />
+            <Statistic description = "huono" value = {bad} />
+            <Statistic description = "keskiarvo" value = {average(good, neutral, bad)} />
+            <Statistic description = "positiivisia" value = {positive(good, neutral, bad)} />
+          </tbody>
+        </table>
       )
     } else {
       return (
