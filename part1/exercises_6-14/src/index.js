@@ -7,17 +7,52 @@ const Button = ({handle, text}) => (
   </button>
 )
 
-const Statistics = ({good, neutral, bad}) => (
-  <div>
-    <h1>statistiikka</h1>
-
-    <div>
-      <div>hyvä {good}</div>
-      <div>neutraali {neutral}</div>
-      <div>huono {bad}</div>
-    </div>
-  </div>
+const Statistic = ({description, value}) => (
+  <div>{description} {value}</div>
 )
+
+const Statistics = ({good, neutral, bad}) => {
+  const sum = (...args) => (
+    args.reduce((previous, current) => previous + current)
+  )
+
+  const average = (good, neutral, bad) => (
+    Number((good - bad) / sum(good, neutral, bad)).toFixed(1)
+  )
+
+  const positive = (good, neutral, bad) => {
+    const percentage = Number(100 * good / sum(good, neutral, bad)).toFixed(1);
+    return percentage.toString() + " %";
+  }
+
+  const statistics = (good, neutral, bad) => {
+    if (sum(good, neutral, bad) > 0) {
+      return (
+        <div>
+          <Statistic description = "hyvä" value = {good} />
+          <Statistic description = "neutraali" value = {neutral} />
+          <Statistic description = "huono" value = {bad} />
+          <Statistic description = "keskiarvo" value = {average(good, neutral, bad)} />
+          <Statistic description = "positiivisia" value = {positive(good, neutral, bad)} />
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <div>ei yhtään palautetta annettu</div>
+        </div>
+      )
+    }   
+  }
+
+  return (
+    <div>
+      <h1>statistiikka</h1>
+
+      {statistics(good, neutral, bad)}
+    </div>
+  )
+}
 
 class App extends React.Component {
   constructor() {
@@ -50,10 +85,7 @@ class App extends React.Component {
             text="huono" />
         </div>
 
-        <Statistics
-          good = {this.state.good}
-          neutral = {this.state.neutral}
-          bad = {this.state.bad} />
+        <Statistics good = {this.state.good} neutral = {this.state.neutral} bad = {this.state.bad} />
       </div>
     )
   }
