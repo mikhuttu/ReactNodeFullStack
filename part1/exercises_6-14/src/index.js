@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 const Button = ({handle, text}) => (
@@ -65,9 +65,11 @@ class App extends React.Component {
   }
 
   render() {
-    const incrementGood = () => this.setState( { good: this.state.good + 1 })
-    const incrementNeutral = () => this.setState( { neutral: this.state.neutral + 1 })
-    const incrementBad = () => this.setState( { bad: this.state.bad + 1 })
+    const increment = (choice, choiceName) => {
+      return () => {
+        this.setState({ [choiceName]: choice + 1})
+      }
+    }
 
     return (
       <div>
@@ -75,13 +77,13 @@ class App extends React.Component {
 
         <div>
           <Button
-            handle={incrementGood}
+            handle={increment(this.state.good, "good")}
             text="hyvä" />
           <Button
-            handle={incrementNeutral}
+            handle={increment(this.state.neutral, "neutral")}
             text="neutraali" />
           <Button
-            handle={incrementBad}
+            handle={increment(this.state.bad, "bad")}
             text="huono" />
         </div>
 
