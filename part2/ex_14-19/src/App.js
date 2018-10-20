@@ -2,6 +2,7 @@ import React from 'react';
 import AddEntry from './components/AddEntry'
 import Filter from './components/Filter'
 import PeopleList from './components/PeopleList'
+import Notification from './components/Notification'
 import axios from 'axios'
 import personService from './services/personService'
 
@@ -36,10 +37,12 @@ class App extends React.Component {
       personService
       .insert(person)
       .then(insertedPerson => {
-        const people = this.state.persons.concat(insertedPerson)
+        const persons = this.state.persons.concat(insertedPerson)
+        const successfulNotification = `Lisättiin henkilö ${insertedPerson.name}`
 
-        this.setState({persons: people})
-        this.filterPeople(people, this.state.filter)         
+        this.setState({persons, successfulNotification})
+        this.filterPeople(persons, this.state.filter)
+        this.hideNotification()
       })
     )
 
@@ -51,7 +54,14 @@ class App extends React.Component {
         .then(data => {
           const persons = this.state.persons.map(p => p.id === updatedPerson.id ? updatedPerson : p)
           const displayedPeople = this.state.displayedPeople.map(p => p.id === updatedPerson.id ? updatedPerson : p)
-          this.setState({persons, displayedPeople})
+          const successfulNotification = `Henkilön ${updatedPerson.name} puhelinnumero vaihdettu`
+
+          this.setState({persons, displayedPeople, successfulNotification})
+          this.hideNotification()
+        })
+        .catch(error => {
+          insertPerson(updatedPerson)
+          window.location.reload()
         })
     }
 
@@ -69,6 +79,12 @@ class App extends React.Component {
       updateNumber(existingPerson, number)
     }
   }
+
+  hideNotification = () => (
+    setTimeout(() => {
+      this.setState({successfulNotification: undefined})
+    }, 5000)
+  )
 
   filterHandler = (event) => (
     this.filterPeople(this.state.persons, event.target.value.toLowerCase())
@@ -89,8 +105,10 @@ class App extends React.Component {
         .then(response => {
           const persons = this.state.persons.filter(p => p.id !== person.id)
           const displayedPeople = this.state.displayedPeople.filter(p => p.id !== person.id)
+          const successfulNotification = `Henkilö ${person.name} poistettu`
 
-          this.setState({persons, displayedPeople})
+          this.setState({persons, displayedPeople, successfulNotification})
+          this.hideNotification()
         })
     }
   }
@@ -103,13 +121,15 @@ class App extends React.Component {
       <div>
         <h1>Puhelinluettelo</h1>
 
+        <Notification success = {this.state.successfulNotification} />
+
         <Filter filter = {this.filterHandler} />
 
         <h2>Numerot</h2>
 
         <PeopleList people = {this.state.displayedPeople} deleteFunction = {this.remove} />
 
-        <h2>Lisää uusi</h2>
+        <h2>Lisää uusi / muuta olemassaolevan numeroa</h2>
 
         <AddEntry
           addEntry = {this.addEntry}
