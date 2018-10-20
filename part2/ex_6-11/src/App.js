@@ -2,24 +2,33 @@ import React from 'react';
 import AddEntry from './components/AddEntry'
 import Filter from './components/Filter'
 import Numbers from './components/Numbers'
+import axios from 'axios'
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      persons: [
-        { name: 'Arto Hellas', number: '040-123456' },
-        { name: 'Martti Tienari', number: '040-123456' },
-        { name: 'Arto Järvinen', number: '040-123456' },
-        { name: 'Lea Kutvonen', number: '040-123456' }
-      ],
+      persons: [],
+      displayedPeople: [],
       newName: '',
       newNumber: '',
       filter: ''
     }
-
-    this.state.displayedPeople = this.state.persons
   }
+
+  componentDidMount() {
+    axios
+    .get("http://localhost:3001/persons")
+    .then(response => {
+      const people = response.data
+
+      this.setState({
+        persons: people,
+        displayedPeople: people
+      })
+    })
+  }
+
 
   addEntry = (event) => {
     event.preventDefault()
