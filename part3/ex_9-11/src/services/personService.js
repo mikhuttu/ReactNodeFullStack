@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const apiUrl = 'http://localhost:3001/api'
+const apiUrl = '/api'
 const personsUrl = apiUrl + '/persons'
 
 const personUrl = (id) => (
